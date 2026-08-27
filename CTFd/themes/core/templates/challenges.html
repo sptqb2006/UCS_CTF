@@ -1,7 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div class="jumbotron">
+  <!-- Dimmed Matrix Rain Background for Challenges Tab -->
+  <div id="challenges-matrix-wrapper">
+    <canvas id="challenges-matrix-canvas"></canvas>
+    <div class="challenges-matrix-overlay"></div>
+  </div>
+
+  <div class="jumbotron position-relative" style="z-index: 1;">
     <div class="container">
       <h1>
         {% trans %}Challenges{% endtrans %}
@@ -9,7 +15,7 @@
     </div>
   </div>
 
-  <div class="container">
+  <div class="container position-relative" style="z-index: 1;">
     <div class="row">
       <div class="col-md-12">
         {% include "components/errors.html" %}
@@ -87,4 +93,17 @@
 
 {% block scripts %}
   {{ Assets.js("assets/js/challenges.js") }}
+  <script src="{{ url_for('views.themes', path='js/cmatrix.js') }}"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const canvas = document.getElementById('challenges-matrix-canvas');
+    if (canvas && typeof matrix === 'function') {
+      matrix(canvas, {
+        font_size: 15,
+        speed_factor: 0.75, // Extra gentle and calm flow for reading
+        fade_alpha: 0.12
+      });
+    }
+  });
+  </script>
 {% endblock %}

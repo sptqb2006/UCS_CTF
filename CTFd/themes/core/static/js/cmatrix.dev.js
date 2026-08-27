@@ -24,16 +24,18 @@
   }
 
   class MatrixStream {
-    constructor(x, height, fontSize) {
+    constructor(x, height, fontSize, speedFactor = 1.0) {
       this.x = x;
       this.fontSize = fontSize;
+      this.speedFactor = speedFactor;
       this.reset(height, true);
     }
 
     reset(height, initial = false) {
       this.height = height;
-      this.length = 10 + Math.floor(Math.random() * 22);
-      this.speed = 1.2 + Math.random() * 2.8;
+      this.length = 10 + Math.floor(Math.random() * 20);
+      // Gentle, smooth matrix stream speed (approx 3x slower)
+      this.speed = (0.4 + Math.random() * 0.7) * this.speedFactor;
       this.chars = [];
       for (let i = 0; i < this.length; i++) {
         this.chars.push(getRandomChar());
@@ -49,7 +51,7 @@
       this.y += this.speed;
 
       // Active matrix character mutation / flickering effect
-      if (Math.random() < 0.2) {
+      if (Math.random() < 0.12) {
         const changeCount = 1 + Math.floor(Math.random() * 2);
         for (let k = 0; k < changeCount; k++) {
           const idx = Math.floor(Math.random() * this.length);
@@ -92,6 +94,8 @@
       this.canvas = canvas;
       this.ctx = canvas.getContext('2d', { alpha: false });
       this.fontSize = options.font_size || 15;
+      this.speedFactor = typeof options.speed_factor === 'number' ? options.speed_factor : 1.0;
+      this.fadeAlpha = typeof options.fade_alpha === 'number' ? options.fade_alpha : 0.15;
       this.streams = [];
       this.running = false;
       this.resize();
@@ -108,9 +112,9 @@
       this.streams = [];
       for (let i = 0; i < numCols; i++) {
         const x = i * colStep + 8;
-        this.streams.push(new MatrixStream(x, this.height, this.fontSize));
-        if (Math.random() > 0.4) {
-          this.streams.push(new MatrixStream(x, this.height, this.fontSize));
+        this.streams.push(new MatrixStream(x, this.height, this.fontSize, this.speedFactor));
+        if (Math.random() > 0.45) {
+          this.streams.push(new MatrixStream(x, this.height, this.fontSize, this.speedFactor));
         }
       }
     }
@@ -131,7 +135,7 @@
     }
 
     render() {
-      this.ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+      this.ctx.fillStyle = 'rgba(0, 0, 0, ' + this.fadeAlpha + ')';
       this.ctx.fillRect(0, 0, this.width, this.height);
 
       for (let i = 0; i < this.streams.length; i++) {

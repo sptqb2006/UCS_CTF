@@ -270,11 +270,14 @@ button[type="submit"]:hover {
 
 /* CTFd Challenge Grid & Buttons */
 .challenge-button, .chal-button, .challenge-card {
-  background: rgba(3, 18, 8, 0.9) !important;
+  background: rgba(3, 18, 8, 0.94) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
   border: 1.5px solid var(--ucs-green-primary) !important;
   border-radius: 8px !important;
   color: var(--ucs-green-primary) !important;
   font-family: 'Share Tech Mono', monospace !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.8) !important;
   transition: all 0.2s ease !important;
 }
 
@@ -441,4 +444,37 @@ footer.footer a:hover {
   text-shadow: 0 0 8px rgba(43, 248, 109, 0.8) !important;
   transform: translateY(-1px) !important;
 }
+
+/* Faint Matrix Rain Background for Challenges Page */
+#challenges-matrix-wrapper {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+  overflow: hidden !important;
+}
+
+#challenges-matrix-canvas {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  opacity: 0.16 !important; /* Gentle, faint, readable matrix background */
+  pointer-events: none !important;
+}
+
+.challenges-matrix-overlay {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: radial-gradient(circle at 50% 35%, rgba(1, 6, 3, 0.35) 0%, rgba(1, 6, 3, 0.82) 100%) !important;
+  pointer-events: none !important;
+}
+
 
