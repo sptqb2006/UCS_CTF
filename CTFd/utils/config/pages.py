@@ -45,9 +45,21 @@ def build_html(html, sanitize=False):
     return html
 
 
+def shorten_raw_urls(html):
+    import re
+
+    pattern = r'<a\s+([^>]*?)href=([\"\'])(https?://[^\s\"\']+)\2([^>]*?)>https?://[^<]+</a>'
+
+    def repl(m):
+        return f'<a {m.group(1)}href="{m.group(3)}"{m.group(4)} class="challenge-link-btn" target="_blank" rel="noopener"><i class="fas fa-external-link-alt mr-1"></i> Link to challenge</a>'
+
+    return re.sub(pattern, repl, html)
+
+
 def build_markdown(md, sanitize=False):
     html = markdown(md)
     html = format_variables(html)
+    html = shorten_raw_urls(html)
     if (
         current_app.config["HTML_SANITIZATION"] is True
         or bool(get_config("html_sanitization")) is True

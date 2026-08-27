@@ -98,13 +98,15 @@
             <span class="challenge-desc">{% block description %}{{ challenge.html }}{% endblock %}</span>
 
             {% if challenge.connection_info %}
-              <div class="mb-2">
+              <div class="mb-3 text-center">
                 <span class="challenge-connection-info">
                   {% block connection_info %}
                     {% set conn = challenge.connection_info %}
                     {% if not conn %}
                     {% elif conn.startswith("http") %}
-                      {{ conn | urlize(target="_blank") }}
+                      <a href="{{ conn }}" target="_blank" rel="noopener" class="challenge-link-btn">
+                        <i class="fas fa-external-link-alt mr-1"></i> Link to challenge
+                      </a>
                     {% else %}
                       <code>{{ conn }}</code>
                     {% endif %}
@@ -112,6 +114,25 @@
                 </span>
               </div>
             {% endif %}
+
+            <script>
+            (() => {
+              const formatLinks = () => {
+                document.querySelectorAll('.challenge-desc a, .challenge-connection-info a').forEach(a => {
+                  const txt = a.textContent.trim();
+                  if (txt.startsWith('http://') || txt.startsWith('https://')) {
+                    a.innerHTML = '<i class="fas fa-external-link-alt mr-1"></i> Link to challenge';
+                    a.classList.add('challenge-link-btn');
+                    a.target = '_blank';
+                    a.rel = 'noopener';
+                  }
+                });
+              };
+              formatLinks();
+              setTimeout(formatLinks, 100);
+              setTimeout(formatLinks, 300);
+            })();
+            </script>
 
             {% if hints %}
               <div class="challenge-hints hint-row row">
