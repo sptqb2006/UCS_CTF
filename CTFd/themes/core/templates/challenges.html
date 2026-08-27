@@ -55,6 +55,21 @@
                     >
 
                       <div class="challenge-inner my-3">
+                        <template x-if="c.tags && c.tags.length">
+                          <div class="mb-2">
+                            <template x-for="t in c.tags">
+                              <span class="badge mr-1"
+                                :class="{
+                                  'bg-success text-white': t.value === 'Dễ' || t.value === 'Easy',
+                                  'bg-warning text-dark': t.value === 'Trung bình' || t.value === 'Medium',
+                                  'bg-danger text-white': t.value === 'Khó' || t.value === 'Hard',
+                                  'bg-info text-white': !['Dễ', 'Easy', 'Trung bình', 'Medium', 'Khó', 'Hard'].includes(t.value)
+                                }"
+                                x-text="t.value">
+                              </span>
+                            </template>
+                          </div>
+                        </template>
                         <p x-text="c.name"></p>
                         <span x-text="c.value"></span>
                       </div>

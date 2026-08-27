@@ -72,6 +72,7 @@ class BaseChallenge(object):
         :return:
         """
         data = dict(request.form or request.get_json() or {})
+        difficulty = data.pop("difficulty", None)
         if "scheduled_at" in data:
             try:
                 data["scheduled_at"] = parse_iso_datetime(data["scheduled_at"])
@@ -95,6 +96,13 @@ class BaseChallenge(object):
 
         db.session.add(challenge)
         db.session.commit()
+
+        if difficulty:
+            from CTFd.models import Tags
+
+            tag = Tags(challenge_id=challenge.id, value=difficulty)
+            db.session.add(tag)
+            db.session.commit()
 
         # If the challenge is dynamic we should calculate a new value
         if challenge.function in DECAY_FUNCTIONS:

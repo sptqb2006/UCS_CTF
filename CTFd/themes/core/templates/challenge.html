@@ -56,18 +56,22 @@
 
 
             {% if tags %}
-              <div class="challenge-tags text-center pt-2 pb-3">
+              <div class="challenge-tags text-center pt-2 pb-2">
                 {% block tags %}
                   {% for tag in tags %}
-                    <span class="challenge-tag badge bg-info">{{ tag }}</span>
+                    <span class="challenge-tag badge {% if tag in ['Dễ', 'Easy'] %}bg-success text-white{% elif tag in ['Trung bình', 'Medium'] %}bg-warning text-dark{% elif tag in ['Khó', 'Hard'] %}bg-danger text-white{% else %}bg-info text-white{% endif %}" style="font-size: 0.85rem; padding: 5px 12px; margin: 0 3px;">{{ tag }}</span>
                   {% endfor %}
                 {% endblock %}
               </div>
             {% endif %}
 
-            <small class="challenge-attribution text-center text-muted">
-              {% block attribution %}{{ challenge.byline }}{% endblock %}
-            </small>
+            {% if challenge.attribution %}
+            <div class="challenge-attribution text-center mb-3">
+              <span class="badge border border-success px-3 py-1 text-success" style="font-family: 'Share Tech Mono', monospace; font-size: 0.9rem; background: rgba(43, 248, 109, 0.08);">
+                <i class="fas fa-user-edit mr-1"></i> Tác giả: <strong>{% block attribution %}{{ challenge.attribution }}{% endblock %}</strong>
+              </span>
+            </div>
+            {% endif %}
 
             {% if Configs.challenge_ratings == "public" %}
             <small class="challenge-ratings text-center text-muted d-block">

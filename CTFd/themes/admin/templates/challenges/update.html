@@ -37,12 +37,12 @@
 	{% block attribution %}
 	<div class="form-group">
 		<label>
-			Attribution:<br>
+			Tác giả (Author):<br>
 			<small class="form-text text-muted">
-				Attribution for your challenge <small>(supports markdown)</small>
+				Tên tác giả hoặc người ra đề (Ví dụ: sptqb, Ban chuyên môn...)
 			</small>
 		</label>
-		<input type="text" class="form-control" name="attribution" value="{{ challenge.attribution }}">
+		<input type="text" class="form-control" name="attribution" value="{{ challenge.attribution }}" placeholder="Nhập tên tác giả">
 	</div>
 	{% endblock %}
 
