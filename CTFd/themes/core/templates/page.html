@@ -3,35 +3,11 @@
 {% block content %}
   {% if request.path == '/' %}
     {% include "components/ucs_hero.html" %}
-    <div id="details-section" class="ucs-details-container container py-5">
-      {% if content and "ctfd.io" not in content and "Click here to login" not in content and "A cool CTF platform" not in content %}
+    {% if content and "ctfd.io" not in content and "Click here to login" not in content and "A cool CTF platform" not in content %}
+      <div id="details-section" class="ucs-details-container container py-5">
         {{ content | safe }}
-      {% else %}
-        <div class="row g-4 my-4">
-          <div class="col-md-4">
-            <div class="cyber-card p-4">
-              <div class="cyber-card-icon"><i class="fas fa-shield-alt"></i></div>
-              <h3>Giới thiệu giải</h3>
-              <p>UCS-CLUBDAY 2026 là giải đấu an toàn thông tin hấp dẫn, mang đến các thử thách thực chiến từ cơ bản đến nâng cao dành cho mọi đối tượng đam mê bảo mật.</p>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="cyber-card p-4">
-              <div class="cyber-card-icon"><i class="fas fa-flag"></i></div>
-              <h3>Thể thức thi đấu</h3>
-              <p>Chế độ thi đấu Jeopardy với các mảng: Web Exploitation, Pwnable, Reverse Engineering, Cryptography, Forensics và Miscellaneous.</p>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="cyber-card p-4">
-              <div class="cyber-card-icon"><i class="fas fa-trophy"></i></div>
-              <h3>Giải thưởng & Vinh danh</h3>
-              <p>Vinh danh các đội thi và cá nhân xuất sắc nhất trên bảng vàng Scoreboard cùng các phần quà độc quyền từ ban tổ chức.</p>
-            </div>
-          </div>
-        </div>
-      {% endif %}
-    </div>
+      </div>
+    {% endif %}
   {% else %}
     <div class="container">
       {{ content | safe }}
