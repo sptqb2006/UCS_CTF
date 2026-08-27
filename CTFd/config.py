@@ -100,6 +100,8 @@ class ServerConfig(object):
         or gen_secret_key()
 
     DATABASE_URL: str = empty_str_cast(config_ini["server"]["DATABASE_URL"])
+    if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
     if not DATABASE_URL:
         if empty_str_cast(config_ini["server"]["DATABASE_HOST"]) is not None:
             # construct URL from individual variables

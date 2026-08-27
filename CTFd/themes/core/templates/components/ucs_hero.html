@@ -1,0 +1,499 @@
+<div id="ucs-hero-wrapper">
+  <!-- Matrix Rain Canvas -->
+  <canvas id="matrix-canvas"></canvas>
+
+  <!-- Vignette overlay for depth, no blurry scanlines -->
+  <div class="cyber-vignette-overlay"></div>
+
+  <!-- Hero Content Container -->
+  <div id="ucs-hero">
+    <!-- Top Bar with Brand Logo and Minimal Menu Access -->
+    <div class="hero-top-bar">
+      <a href="{{ url_for('views.static_html', route='/') }}" class="hero-top-logo" title="{{ Configs.ctf_name }}">
+        <img 
+          src="{{ url_for('views.themes', path='img/ucs_logo_transparent.png') }}" 
+          alt="{{ Configs.ctf_name }}" 
+          height="40"
+          style="max-height: 44px; width: auto; filter: drop-shadow(0 0 8px rgba(43, 248, 109, 0.45));"
+        >
+      </a>
+      <button class="cyber-menu-btn" id="heroMenuToggle" aria-label="Toggle Navigation">
+        <i class="fas fa-terminal me-1"></i> <span>MENU</span>
+      </button>
+    </div>
+
+    <!-- Center Hero Section -->
+    <div class="hero-center">
+      <div class="logo-wrapper">
+        <img 
+          src="{{ url_for('views.themes', path='img/ucs_logo_transparent.png') }}" 
+          alt="UCS Logo" 
+          class="ucs-hacker-logo"
+        >
+      </div>
+
+      <h1 class="ucs-hero-title">UCS-CLUBDAY 2026</h1>
+      <p class="ucs-hero-tagline">Hack. Learn. Capture the Flag.</p>
+
+      <div class="ucs-hero-schedule">
+        <div class="schedule-dates">08:00 28/08/2026 - 16:00 28/08/2026</div>
+      </div>
+
+      <div class="ucs-btn-container">
+        {% if authed() %}
+          <a href="{{ url_for('challenges.listing') }}" class="ucs-btn ucs-btn-primary">
+            Challenges
+          </a>
+        {% else %}
+          <a href="{{ url_for('auth.register') }}" class="ucs-btn ucs-btn-primary">
+            Join Event
+          </a>
+        {% endif %}
+
+        <a href="{{ url_for('scoreboard.listing') }}" class="ucs-btn">
+          Scoreboard
+        </a>
+      </div>
+    </div>
+
+    <!-- Bottom Bar Section -->
+    <div class="hero-bottom-bar">
+      <div class="bottom-item bottom-left">
+        Ready to break the system?<span class="cursor-blink">_</span>
+      </div>
+
+      <div class="bottom-item bottom-center">
+        <a href="#details-section" class="readmore-trigger" id="readMoreTrigger">
+          <span class="readmore-text">Read more</span>
+          <div class="chevron-anim">
+            <i class="fas fa-chevron-down"></i>
+          </div>
+        </a>
+      </div>
+
+      <div class="bottom-item bottom-right">
+        <!-- Kept empty for flexbox balance -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Landing Page Global Resets */
+html, body.ucs-landing-page {
+  background-color: #000000 !important;
+  color: #c9ffd5;
+  overflow-x: hidden;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+body.ucs-landing-page main {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Navbar on Landing Page: hidden at top, slide down on scroll */
+.landing-navbar {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+  background: rgba(2, 8, 4, 0.96) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(43, 248, 109, 0.4);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
+}
+
+.landing-navbar.navbar-visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Hero Section Wrapper */
+#ucs-hero-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  max-height: 100vh;
+  background-color: #000000;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* Matrix Rain Canvas */
+#matrix-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  display: block;
+}
+
+/* Vignette Overlay for Depth */
+.cyber-vignette-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.2) 30%, rgba(0,0,0,0.7) 85%, #000000 100%);
+}
+
+/* Hero Layout */
+#ucs-hero {
+  user-select: none;
+  -webkit-user-select: none;
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 36px 18px 36px;
+  box-sizing: border-box;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+/* Top Bar Toggle Button and Brand */
+.hero-top-bar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  opacity: 0.85;
+  transition: opacity 0.3s ease;
+}
+.hero-top-bar:hover {
+  opacity: 1;
+}
+
+.hero-top-logo {
+  display: inline-flex;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+.hero-top-logo:hover {
+  transform: scale(1.05);
+}
+
+.cyber-menu-btn {
+  background: rgba(3, 20, 8, 0.8);
+  border: 1px solid #2bf86d;
+  color: #2bf86d;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.82rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: all 0.2s ease;
+}
+
+.cyber-menu-btn:hover {
+  background: rgba(43, 248, 109, 0.2);
+  color: #ffffff;
+}
+
+/* Center Section */
+.hero-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin: auto 0;
+  max-width: 900px;
+  width: 100%;
+}
+
+.logo-wrapper {
+  margin-bottom: 10px;
+}
+
+.ucs-hacker-logo {
+  width: 138px;
+  height: auto;
+  filter: drop-shadow(0 0 12px rgba(43, 248, 109, 0.6));
+  transition: transform 0.3s ease;
+}
+
+/* Hero Title - Sharp, Crisp, Clear Green */
+.ucs-hero-title {
+  font-family: 'Share Tech Mono', 'Courier New', monospace;
+  font-size: clamp(2.8rem, 6vw, 4.4rem);
+  font-weight: 700;
+  color: #2bf86d;
+  letter-spacing: 5px;
+  margin: 0 0 4px 0;
+  line-height: 1.05;
+  /* Crisp clean outline / subtle shadow, no blurry cloud */
+  text-shadow: 0 0 4px rgba(43, 248, 109, 0.5);
+}
+
+/* Hero Tagline - Clear, Readable */
+.ucs-hero-tagline {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: clamp(1.1rem, 2.3vw, 1.6rem);
+  color: #38ff80;
+  letter-spacing: 1.5px;
+  margin: 0 0 10px 0;
+}
+
+/* Schedule - Clear Green */
+.ucs-hero-schedule {
+  font-size: clamp(0.9rem, 1.7vw, 1.1rem);
+  color: #22d65e;
+  letter-spacing: 2px;
+  margin-bottom: 24px;
+  line-height: 1.45;
+}
+
+/* Button Row - Clean Crisp Borders */
+.ucs-btn-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 22px;
+  width: 100%;
+}
+
+.ucs-btn {
+  display: inline-block;
+  padding: 10px 32px;
+  background: rgba(2, 18, 7, 0.85);
+  color: #ffffff;
+  border: 1.5px solid #2bf86d;
+  border-radius: 10px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1.08rem;
+  text-decoration: none;
+  letter-spacing: 1.5px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: all 0.2s ease;
+  min-width: 150px;
+  text-align: center;
+}
+
+.ucs-btn:hover {
+  color: #ffffff;
+  background: rgba(43, 248, 109, 0.25);
+  border-color: #55ff8c;
+  transform: translateY(-2px);
+  box-shadow: 0 0 12px rgba(43, 248, 109, 0.4);
+}
+
+.ucs-btn-primary {
+  background: rgba(5, 30, 12, 0.9);
+  border-color: #3bfb7d;
+  color: #ffffff;
+}
+
+/* Bottom Bar */
+.hero-bottom-bar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+  padding-bottom: 4px;
+}
+
+.bottom-item {
+  flex: 1;
+}
+
+.bottom-left {
+  text-align: left;
+  color: #22d65e;
+  letter-spacing: 1px;
+}
+
+.cursor-blink {
+  animation: cursorBlink 1s infinite;
+  color: #2bf86d;
+}
+
+@keyframes cursorBlink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.bottom-center {
+  text-align: center;
+}
+
+.readmore-trigger {
+  color: #22d65e;
+  text-decoration: none;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.2s ease;
+  font-size: 0.92rem;
+  letter-spacing: 1px;
+}
+
+.readmore-trigger:hover {
+  color: #55ff8c;
+}
+
+.chevron-anim {
+  margin-top: 3px;
+  animation: chevronBounce 1.8s ease-in-out infinite;
+}
+
+@keyframes chevronBounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(5px);
+  }
+  60% {
+    transform: translateY(2px);
+  }
+}
+
+.bottom-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Details Section Styling */
+.ucs-details-container {
+  color: #c9ffd5;
+  font-family: 'Share Tech Mono', monospace;
+  position: relative;
+  z-index: 10;
+}
+
+.cyber-card {
+  background: rgba(3, 18, 8, 0.85);
+  border: 1px solid rgba(43, 248, 109, 0.3);
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+.cyber-card:hover {
+  border-color: #2bf86d;
+  box-shadow: 0 0 15px rgba(43, 248, 109, 0.25);
+  transform: translateY(-4px);
+}
+
+.cyber-card-icon {
+  font-size: 2rem;
+  color: #2bf86d;
+  margin-bottom: 12px;
+}
+
+.cyber-card h3 {
+  color: #ffffff;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+}
+
+body.ucs-landing-page footer.footer {
+  background: #000000 !important;
+  border-top: 1px solid rgba(43, 248, 109, 0.2);
+  padding: 20px 0;
+}
+
+body.ucs-landing-page footer.footer a,
+body.ucs-landing-page footer.footer small {
+  color: #22d65e !important;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  #ucs-hero {
+  user-select: none;
+  -webkit-user-select: none;
+    padding: 12px 18px;
+  }
+  .ucs-hacker-logo {
+    width: 100px;
+  }
+  .ucs-btn-container {
+    gap: 10px;
+  }
+  .ucs-btn {
+    padding: 8px 18px;
+    font-size: 0.95rem;
+    min-width: 105px;
+  }
+  .hero-bottom-bar {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .bottom-item {
+    width: 100%;
+    text-align: center;
+  }
+}
+</style>
+
+<!-- Load cmatrix.js library -->
+<script src="{{ url_for('views.themes', path='js/cmatrix.js') }}"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.body.classList.add('ucs-landing-page');
+
+  const canvas = document.getElementById('matrix-canvas');
+  if (canvas && typeof matrix === 'function') {
+    matrix(canvas, {
+      font_size: 16
+    });
+  }
+
+  const navbar = document.querySelector('.landing-navbar');
+  const heroWrapper = document.getElementById('ucs-hero-wrapper');
+  
+  function handleScroll() {
+    if (!navbar) return;
+    if (window.scrollY > 80) {
+      navbar.classList.add('navbar-visible');
+    } else {
+      navbar.classList.remove('navbar-visible');
+    }
+  }
+
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  handleScroll();
+
+  const menuBtn = document.getElementById('heroMenuToggle');
+  if (menuBtn && navbar) {
+    menuBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      navbar.classList.toggle('navbar-visible');
+    });
+  }
+
+  const readMoreBtn = document.getElementById('readMoreTrigger');
+  if (readMoreBtn) {
+    readMoreBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.getElementById('details-section');
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  }
+});
+</script>

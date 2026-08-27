@@ -1,0 +1,415 @@
+/**
+ * UCS Cyber Green Theme for CTFd
+ * Applies cohesive matrix/hacker aesthetic across all internal pages
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@700&display=swap');
+
+:root {
+  --ucs-green-primary: #2bf86d;
+  --ucs-green-bright: #55ff8c;
+  --ucs-green-dim: #1ea84c;
+  --ucs-green-dark: #07230f;
+  --ucs-bg-darkest: #010603;
+  --ucs-bg-panel: rgba(2, 15, 6, 0.92);
+  --ucs-border: rgba(43, 248, 109, 0.4);
+  --ucs-border-glow: rgba(43, 248, 109, 0.6);
+  --ucs-text-light: #d8ffe2;
+  --ucs-text-muted: #64ad77;
+}
+
+/* Global Background and Typography */
+html, body {
+  background-color: var(--ucs-bg-darkest) !important;
+  color: var(--ucs-text-light) !important;
+  font-family: 'Share Tech Mono', monospace, -apple-system, sans-serif !important;
+  min-height: 100vh;
+}
+
+body[data-bs-theme="dark"], body[data-bs-theme="light"] {
+  background-color: var(--ucs-bg-darkest) !important;
+  color: var(--ucs-text-light) !important;
+}
+
+main {
+  background-color: transparent !important;
+  color: var(--ucs-text-light) !important;
+}
+
+/* Links */
+a {
+  color: var(--ucs-green-primary) !important;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+a:hover {
+  color: var(--ucs-green-bright) !important;
+  text-shadow: 0 0 8px rgba(43, 248, 109, 0.6);
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: 'Share Tech Mono', monospace !important;
+  color: var(--ucs-green-primary) !important;
+  letter-spacing: 1.5px;
+  text-shadow: 0 0 6px rgba(43, 248, 109, 0.4);
+}
+
+/* Navigation Bar */
+.navbar, .navbar.bg-dark, nav.navbar {
+  background-color: rgba(2, 9, 4, 0.96) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--ucs-border) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.85);
+}
+
+.navbar-brand {
+  color: var(--ucs-green-primary) !important;
+  font-family: 'Share Tech Mono', monospace !important;
+  letter-spacing: 1px;
+}
+
+.navbar .nav-link {
+  color: var(--ucs-green-primary) !important;
+  font-family: 'Share Tech Mono', monospace !important;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link.active,
+.navbar .nav-link:focus {
+  color: #ffffff !important;
+  text-shadow: 0 0 8px rgba(43, 248, 109, 0.7);
+}
+
+.dropdown-menu {
+  background-color: rgba(2, 14, 6, 0.98) !important;
+  border: 1px solid var(--ucs-green-primary) !important;
+  box-shadow: 0 0 15px rgba(43, 248, 109, 0.3) !important;
+  border-radius: 8px;
+}
+
+.dropdown-item {
+  color: var(--ucs-green-primary) !important;
+  font-family: 'Share Tech Mono', monospace !important;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+  background-color: rgba(43, 248, 109, 0.2) !important;
+  color: #ffffff !important;
+}
+
+/* Form Controls (Inputs, Textarea, Select) */
+.form-control,
+.form-select,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+textarea {
+  background-color: rgba(2, 16, 7, 0.88) !important;
+  border: 1.5px solid var(--ucs-border) !important;
+  color: #ffffff !important;
+  border-radius: 8px !important;
+  font-family: 'Share Tech Mono', monospace !important;
+  font-size: 1rem !important;
+  padding: 10px 14px !important;
+  transition: all 0.25s ease !important;
+}
+
+.form-control::placeholder {
+  color: var(--ucs-text-muted) !important;
+  opacity: 0.65;
+}
+
+.form-control:focus,
+.form-select:focus,
+input:focus,
+textarea:focus {
+  background-color: rgba(3, 24, 10, 0.96) !important;
+  border-color: var(--ucs-green-primary) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 14px rgba(43, 248, 109, 0.5) !important;
+  outline: none !important;
+}
+
+.form-label, label {
+  color: var(--ucs-green-primary) !important;
+  font-family: 'Share Tech Mono', monospace !important;
+  font-size: 0.98rem;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.form-text, small.text-muted, .text-muted {
+  color: var(--ucs-text-muted) !important;
+  font-family: 'Share Tech Mono', monospace !important;
+}
+
+/* Buttons */
+.btn,
+.btn-primary,
+.btn-success,
+button[type="submit"] {
+  background: rgba(4, 30, 12, 0.92) !important;
+  border: 1.5px solid var(--ucs-green-primary) !important;
+  color: #ffffff !important;
+  border-radius: 8px !important;
+  font-family: 'Share Tech Mono', monospace !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 1px !important;
+  padding: 9px 24px !important;
+  box-shadow: 0 0 10px rgba(43, 248, 109, 0.25) !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer;
+}
+
+.btn:hover,
+.btn-primary:hover,
+.btn-success:hover,
+button[type="submit"]:hover {
+  background: rgba(43, 248, 109, 0.28) !important;
+  border-color: var(--ucs-green-bright) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 18px rgba(43, 248, 109, 0.55) !important;
+  transform: translateY(-2px);
+}
+
+.btn-secondary, .btn-outline-secondary {
+  background: rgba(2, 14, 6, 0.8) !important;
+  border: 1.5px solid var(--ucs-border) !important;
+  color: var(--ucs-green-primary) !important;
+}
+
+.btn-secondary:hover, .btn-outline-secondary:hover {
+  background: rgba(43, 248, 109, 0.2) !important;
+  border-color: var(--ucs-green-primary) !important;
+  color: #ffffff !important;
+}
+
+/* Cards & Containers */
+.card, .jumbotron {
+  background: var(--ucs-bg-panel) !important;
+  border: 1px solid var(--ucs-border) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.85) !important;
+  color: var(--ucs-text-light) !important;
+}
+
+.card-header {
+  background: rgba(4, 25, 10, 0.85) !important;
+  border-bottom: 1px solid var(--ucs-border) !important;
+  color: var(--ucs-green-primary) !important;
+  font-family: 'Share Tech Mono', monospace !important;
+  font-weight: bold;
+}
+
+.card-footer {
+  background: rgba(4, 25, 10, 0.85) !important;
+  border-top: 1px solid var(--ucs-border) !important;
+}
+
+/* Tables */
+.table {
+  background-color: transparent !important;
+  color: var(--ucs-text-light) !important;
+  border-color: rgba(43, 248, 109, 0.2) !important;
+  font-family: 'Share Tech Mono', monospace !important;
+}
+
+.table th, .table thead th {
+  background-color: rgba(4, 24, 10, 0.9) !important;
+  color: var(--ucs-green-primary) !important;
+  border-bottom: 2px solid var(--ucs-green-primary) !important;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.table td {
+  border-color: rgba(43, 248, 109, 0.15) !important;
+  color: var(--ucs-text-light) !important;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+  background-color: rgba(43, 248, 109, 0.03) !important;
+  color: var(--ucs-text-light) !important;
+}
+
+.table-hover > tbody > tr:hover > * {
+  background-color: rgba(43, 248, 109, 0.12) !important;
+  color: #ffffff !important;
+}
+
+/* Modals (Challenge Detail Popups) */
+.modal-content {
+  background-color: rgba(2, 12, 5, 0.98) !important;
+  border: 1.5px solid var(--ucs-green-primary) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 0 30px rgba(43, 248, 109, 0.3), 0 12px 40px rgba(0, 0, 0, 0.95) !important;
+  color: var(--ucs-text-light) !important;
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--ucs-border) !important;
+  color: var(--ucs-green-primary) !important;
+}
+
+.modal-footer {
+  border-top: 1px solid var(--ucs-border) !important;
+}
+
+.btn-close {
+  filter: invert(1) hue-rotate(90deg) !important;
+}
+
+/* CTFd Challenge Grid & Buttons */
+.challenge-button, .chal-button, .challenge-card {
+  background: rgba(3, 18, 8, 0.9) !important;
+  border: 1.5px solid var(--ucs-green-primary) !important;
+  border-radius: 8px !important;
+  color: var(--ucs-green-primary) !important;
+  font-family: 'Share Tech Mono', monospace !important;
+  transition: all 0.2s ease !important;
+}
+
+.challenge-button:hover, .chal-button:hover {
+  background: rgba(43, 248, 109, 0.25) !important;
+  border-color: var(--ucs-green-bright) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 16px rgba(43, 248, 109, 0.45) !important;
+  transform: translateY(-2px);
+}
+
+.challenge-button.solved, .chal-button.solved {
+  background: rgba(43, 248, 109, 0.18) !important;
+  border-color: rgba(43, 248, 109, 0.7) !important;
+  opacity: 0.8;
+}
+
+/* Badges & Pills */
+.badge {
+  background: rgba(43, 248, 109, 0.15) !important;
+  border: 1px solid var(--ucs-green-primary) !important;
+  color: var(--ucs-green-primary) !important;
+  font-family: 'Share Tech Mono', monospace !important;
+  font-weight: 500;
+}
+
+/* Tabs */
+.nav-tabs {
+  border-bottom: 1px solid var(--ucs-border) !important;
+}
+
+.nav-tabs .nav-link {
+  color: var(--ucs-green-primary) !important;
+  font-family: 'Share Tech Mono', monospace !important;
+  border: none !important;
+  border-bottom: 2px solid transparent !important;
+}
+
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-link:hover {
+  background: transparent !important;
+  color: #ffffff !important;
+  border-bottom: 2px solid var(--ucs-green-primary) !important;
+  text-shadow: 0 0 8px rgba(43, 248, 109, 0.5);
+}
+
+/* Pagination */
+.page-link {
+  background-color: rgba(2, 14, 6, 0.85) !important;
+  border-color: var(--ucs-border) !important;
+  color: var(--ucs-green-primary) !important;
+  font-family: 'Share Tech Mono', monospace !important;
+}
+
+.page-item.active .page-link {
+  background-color: rgba(43, 248, 109, 0.25) !important;
+  border-color: var(--ucs-green-primary) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 10px rgba(43, 248, 109, 0.3) !important;
+}
+
+/* Alerts */
+.alert {
+  background-color: rgba(3, 22, 9, 0.95) !important;
+  border: 1px solid var(--ucs-green-primary) !important;
+  color: var(--ucs-text-light) !important;
+  border-radius: 8px !important;
+}
+
+.alert-danger {
+  border-color: #ff4757 !important;
+  color: #ff99a0 !important;
+  background-color: rgba(30, 5, 8, 0.95) !important;
+}
+
+/* Footer Styling */
+footer.footer {
+  background-color: #000000 !important;
+  border-top: 1px solid rgba(43, 248, 109, 0.25) !important;
+  padding: 22px 0 !important;
+  margin-top: auto;
+}
+
+footer.footer a,
+footer.footer small,
+footer.footer span {
+  color: var(--ucs-green-primary) !important;
+  font-family: 'Share Tech Mono', monospace !important;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  text-decoration: none !important;
+  transition: all 0.2s ease;
+}
+
+footer.footer a:hover {
+  color: var(--ucs-green-bright) !important;
+  text-shadow: 0 0 10px rgba(43, 248, 109, 0.7);
+}
+
+
+/* Sticky Footer Layout */
+body {
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 100vh !important;
+}
+
+main {
+  flex: 1 0 auto !important;
+}
+
+footer.footer {
+  flex-shrink: 0 !important;
+  margin-top: auto !important;
+  background: #000000 !important;
+  border-top: 1px solid rgba(43, 248, 109, 0.3) !important;
+  padding: 18px 0 !important;
+  z-index: 10;
+}
+
+footer.footer .text-muted,
+footer.footer .text-secondary,
+footer.footer small,
+footer.footer a {
+  color: #2bf86d !important;
+  font-family: 'Share Tech Mono', monospace !important;
+  font-size: 0.95rem !important;
+  letter-spacing: 1px !important;
+  text-decoration: none !important;
+  opacity: 0.9 !important;
+}
+
+footer.footer a:hover small,
+footer.footer a:hover {
+  color: #55ff8c !important;
+  text-shadow: 0 0 10px rgba(43, 248, 109, 0.7) !important;
+  opacity: 1 !important;
+}

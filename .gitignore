@@ -75,6 +75,7 @@ CTFd/uploads
 .data/
 .ctfd_secret_key
 *.db
+!CTFd/ctfd.db
 *.log
 *.log.*
 

@@ -31,10 +31,9 @@ class UserSchema(ma.ModelSchema):
     email = field_for(
         Users,
         "email",
-        allow_none=False,
+        allow_none=True,
         validate=[
-            validate.Email("Emails must be a properly formatted email address"),
-            validate.Length(min=1, max=128, error="Emails must not be empty"),
+            validate.Length(max=128, error="Emails must not exceed 128 characters"),
         ],
     )
     website = field_for(

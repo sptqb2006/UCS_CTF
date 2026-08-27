@@ -403,10 +403,10 @@ class Users(db.Model):
     # Core attributes
     id = db.Column(db.Integer, primary_key=True)
     oauth_id = db.Column(db.Integer, unique=True)
-    # User names are not constrained to be unique to allow for official/unofficial teams.
-    name = db.Column(db.String(128))
+    # User names are unique
+    name = db.Column(db.String(128), unique=True, index=True)
     password = db.Column(db.String(128))
-    email = db.Column(db.String(128), unique=True)
+    email = db.Column(db.String(128), unique=True, nullable=True)
     type = db.Column(db.String(80))
     secret = db.Column(db.String(128))
 

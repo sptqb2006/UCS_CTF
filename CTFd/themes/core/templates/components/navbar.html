@@ -1,16 +1,13 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top {% if request.path == '/' %}landing-navbar{% endif %}">
   <div class="container">
     <a href="{{ url_for('views.static_html', route='/') }}" class="navbar-brand">
-      {% if Configs.ctf_logo %}
-        <img
-            class="img-responsive ctf_logo"
-            src="{{ url_for('views.files', path=Configs.ctf_logo) }}"
-            alt="{{ Configs.ctf_name }}"
-            height="25"
-        >
-      {% else %}
-        {{ Configs.ctf_name }}
-      {% endif %}
+      <img
+          class="img-responsive ctf_logo"
+          src="{{ url_for('views.themes', path='img/ucs_logo_transparent.png') }}"
+          alt="{{ Configs.ctf_name }}"
+          height="36"
+          style="max-height: 40px; width: auto; filter: drop-shadow(0 0 8px rgba(43, 248, 109, 0.45));"
+      >
     </a>
 
     <button

@@ -2,6 +2,7 @@ import requests
 from flask import Blueprint, abort, redirect, render_template, request, session, url_for
 from flask import current_app as app
 from flask_babel import lazy_gettext as _l
+from sqlalchemy.exc import IntegrityError
 
 from CTFd.cache import cache, clear_team_session, clear_user_session
 from CTFd.exceptions.email import (
@@ -249,7 +250,8 @@ def register():
 
     if request.method == "POST":
         name = request.form.get("name", "").strip()
-        email_address = request.form.get("email", "").strip().lower()
+        raw_email = request.form.get("email", "").strip().lower()
+        email_address = raw_email if raw_email else None
         password = request.form.get("password", "").strip()
 
         website = request.form.get("website")
@@ -262,14 +264,19 @@ def register():
         names = (
             Users.query.add_columns(Users.name, Users.id).filter_by(name=name).first()
         )
-        emails = (
-            Users.query.add_columns(Users.email, Users.id)
-            .filter_by(email=email_address)
-            .first()
-        )
+        emails = None
+        if email_address:
+            emails = (
+                Users.query.add_columns(Users.email, Users.id)
+                .filter_by(email=email_address)
+                .first()
+            )
+            valid_email = validators.validate_email(email_address)
+        else:
+            valid_email = True
+
         pass_short = len(password) == 0
         pass_long = len(password) > 128
-        valid_email = validators.validate_email(email_address)
         team_name_email_check = validators.validate_email(name)
 
         password_min_length = int(get_config("password_min_length", default=0))
@@ -328,16 +335,22 @@ def register():
             else:
                 valid_bracket = True
 
-        if not valid_email:
+        if email_address and not valid_email:
             errors.append(_l("Please enter a valid email address"))
-        if email.check_email_is_whitelisted(email_address) is False:
+        if email_address and email.check_email_is_whitelisted(email_address) is False:
             errors.append(_l("Your email address is not from an allowed domain"))
-        if email.check_email_is_blacklisted(email_address) is True:
+        if email_address and email.check_email_is_blacklisted(email_address) is True:
             errors.append(_l("Your email address is not from an allowed domain"))
         if names:
-            errors.append(_l("That user name is already taken"))
+            errors.append(_l("That username is already taken"))
         if team_name_email_check is True:
-            errors.append(_l("Your user name cannot be an email address"))
+            errors.append(_l("Your username cannot be an email address"))
+        if name_len or len(name) < 3:
+            errors.append(_l("Username must be at least 3 characters"))
+        if len(name) > 128:
+            errors.append(_l("Username must be under 128 characters"))
+        if any(c in name for c in ["\n", "\r", "\t", "\0"]):
+            errors.append(_l("Username contains invalid characters"))
         if emails:
             errors.append(_l("That email has already been used"))
         if pass_short:
@@ -348,8 +361,6 @@ def register():
             )
         if pass_long:
             errors.append(_l("Pick a shorter password"))
-        if name_len:
-            errors.append(_l("Pick a longer user name"))
         if valid_website is False:
             errors.append(
                 _l("Websites must be a proper URL starting with http or https")
@@ -365,9 +376,8 @@ def register():
             return render_template(
                 "register.html",
                 errors=errors,
-                name=request.form["name"],
-                email=request.form["email"],
-                password=request.form["password"],
+                name=request.form.get("name", ""),
+                password=request.form.get("password", ""),
             )
         else:
             with app.app_context():
@@ -385,9 +395,19 @@ def register():
                 if country:
                     user.country = country
 
-                db.session.add(user)
-                db.session.commit()
-                db.session.flush()
+                try:
+                    db.session.add(user)
+                    db.session.commit()
+                    db.session.flush()
+                except IntegrityError:
+                    db.session.rollback()
+                    errors.append(_l("That username is already taken"))
+                    return render_template(
+                        "register.html",
+                        errors=errors,
+                        name=request.form.get("name", ""),
+                        password=request.form.get("password", ""),
+                    )
 
                 for field_id, value in entries.items():
                     entry = UserFieldEntries(
@@ -403,7 +423,7 @@ def register():
                 ):
                     return redirect(request.args.get("next"))
 
-                if config.can_send_mail() and get_config(
+                if user.email and config.can_send_mail() and get_config(
                     "verify_emails"
                 ):  # Confirming users is enabled and we can send email.
                     log(
@@ -417,15 +437,14 @@ def register():
                     return redirect(url_for("auth.confirm"))
                 else:  # Don't care about confirming users
                     if (
-                        config.can_send_mail()
+                        user.email and config.can_send_mail()
                     ):  # We want to notify the user that they have registered.
                         email.successful_registration_notification(user.email)
 
         log(
             "registrations",
-            format="[{date}] {ip} - {name} registered with {email}",
+            format="[{date}] {ip} - {name} registered",
             name=user.name,
-            email=user.email,
         )
         db.session.close()
 

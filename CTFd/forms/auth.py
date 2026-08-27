@@ -26,15 +26,10 @@ def RegistrationForm(*args, **kwargs):
 
     class _RegistrationForm(BaseForm):
         name = StringField(
-            _l("User Name"),
+            _l("Username"),
             description="Your username on the site",
             validators=[InputRequired()],
             render_kw={"autofocus": True},
-        )
-        email = EmailField(
-            _l("Email"),
-            description="Never shown to the public",
-            validators=[InputRequired()],
         )
         password = PasswordField(
             _l("Password"),
@@ -62,7 +57,7 @@ def RegistrationForm(*args, **kwargs):
 
 class LoginForm(BaseForm):
     name = StringField(
-        _l("User Name or Email"),
+        _l("Username"),
         validators=[InputRequired()],
         render_kw={"autofocus": True},
     )
