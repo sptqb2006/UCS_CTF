@@ -283,6 +283,11 @@ class Tags(db.Model):
     )
     value = db.Column(db.String(80))
 
+    @validates("value")
+    def validate_value(self, key, val):
+        mapping = {"Dễ": "Easy", "Trung bình": "Medium", "Khó": "Hard"}
+        return mapping.get(val, val)
+
     def __init__(self, *args, **kwargs):
         super(Tags, self).__init__(**kwargs)
 

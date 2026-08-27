@@ -59,7 +59,13 @@
               <div class="challenge-tags text-center pt-2 pb-2">
                 {% block tags %}
                   {% for tag in tags %}
-                    <span class="challenge-tag badge {% if tag in ['Dễ', 'Easy'] %}bg-success text-white{% elif tag in ['Trung bình', 'Medium'] %}bg-warning text-dark{% elif tag in ['Khó', 'Hard'] %}bg-danger text-white{% else %}bg-info text-white{% endif %}" style="font-size: 0.85rem; padding: 5px 12px; margin: 0 3px;">{{ tag }}</span>
+                    <span class="challenge-tag badge {% if tag in ['Dễ', 'Easy'] %}bg-success text-white{% elif tag in ['Trung bình', 'Medium'] %}bg-warning text-dark{% elif tag in ['Khó', 'Hard'] %}bg-danger text-white{% else %}bg-info text-white{% endif %}" style="font-size: 0.85rem; padding: 5px 12px; margin: 0 3px;">
+                      {%- if tag in ['Dễ', 'Easy'] -%}Easy
+                      {%- elif tag in ['Trung bình', 'Medium'] -%}Medium
+                      {%- elif tag in ['Khó', 'Hard'] -%}Hard
+                      {%- else -%}{{ tag }}
+                      {%- endif -%}
+                    </span>
                   {% endfor %}
                 {% endblock %}
               </div>

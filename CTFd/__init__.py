@@ -282,6 +282,17 @@ def create_app(config="CTFd.config.Config"):
             # Allows migrations to happen properly
             upgrade()
 
+        # Migrate any existing Vietnamese difficulty tags to English
+        try:
+            from sqlalchemy import text
+
+            db.session.execute(text("UPDATE tags SET value = 'Easy' WHERE value = 'Dễ'"))
+            db.session.execute(text("UPDATE tags SET value = 'Medium' WHERE value = 'Trung bình'"))
+            db.session.execute(text("UPDATE tags SET value = 'Hard' WHERE value = 'Khó'"))
+            db.session.commit()
+        except Exception:
+            db.session.rollback()
+
         from CTFd.models import ma
 
         ma.init_app(app)

@@ -100,6 +100,8 @@ class BaseChallenge(object):
         if difficulty:
             from CTFd.models import Tags
 
+            diff_map = {"Dễ": "Easy", "Trung bình": "Medium", "Khó": "Hard"}
+            difficulty = diff_map.get(difficulty, difficulty)
             tag = Tags(challenge_id=challenge.id, value=difficulty)
             db.session.add(tag)
             db.session.commit()

@@ -65,7 +65,7 @@
                                   'bg-danger text-white': t.value === 'Khó' || t.value === 'Hard',
                                   'bg-info text-white': !['Dễ', 'Easy', 'Trung bình', 'Medium', 'Khó', 'Hard'].includes(t.value)
                                 }"
-                                x-text="t.value">
+                                x-text="{'Dễ': 'Easy', 'Trung bình': 'Medium', 'Khó': 'Hard'}[t.value] || t.value">
                               </span>
                             </template>
                           </div>
