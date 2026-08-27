@@ -42,28 +42,28 @@
 	{% block attribution %}
 	<div class="form-group">
 		<label>
-			Tác giả (Author):<br>
+			Author:<br>
 			<small class="form-text text-muted">
-				Tên tác giả hoặc người ra đề (Ví dụ: sptqb, Ban chuyên môn...)
+				Challenge author or team (e.g. sptqb, Challenge Team...)
 			</small>
 		</label>
-		<input type="text" class="form-control" name="attribution" placeholder="Nhập tên tác giả">
+		<input type="text" class="form-control" name="attribution" placeholder="Enter author name">
 	</div>
 	{% endblock %}
 
 	{% block difficulty %}
 	<div class="form-group">
 		<label>
-			Mức độ (Difficulty):<br>
+			Difficulty:<br>
 			<small class="form-text text-muted">
-				Mức độ thử thách của bài thi
+				Challenge difficulty level
 			</small>
 		</label>
 		<select class="form-control custom-select" name="difficulty">
-			<option value="">-- Chọn mức độ --</option>
-			<option value="Dễ">Dễ (Easy)</option>
-			<option value="Trung bình">Trung bình (Medium)</option>
-			<option value="Khó">Khó (Hard)</option>
+			<option value="">-- Select Difficulty --</option>
+			<option value="Easy">Easy</option>
+			<option value="Medium">Medium</option>
+			<option value="Hard">Hard</option>
 		</select>
 	</div>
 	{% endblock %}
