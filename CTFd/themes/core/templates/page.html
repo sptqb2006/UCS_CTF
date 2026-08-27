@@ -4,7 +4,7 @@
   {% if request.path == '/' %}
     {% include "components/ucs_hero.html" %}
     <div id="details-section" class="ucs-details-container container py-5">
-      {% if content %}
+      {% if content and "ctfd.io" not in content and "Click here to login" not in content and "A cool CTF platform" not in content %}
         {{ content | safe }}
       {% else %}
         <div class="row g-4 my-4">
