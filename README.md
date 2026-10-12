@@ -1,15 +1,13 @@
-# USC_CTF - UCS-CLUBDAY 2026
+# USC_CTF - USTH CLUBDAY 2026
 
-Custom CTF platform for **UCS-CLUBDAY 2026** built with custom Cyber Green / Matrix terminal theme, optimized security configurations, and automated deployment setup.
+Custom CTF platform for **UCS-CLUBDAY 2026** using CTFd platform.
 
-## 🚀 Overview
+## Overview
 
 - **Event:** UCS-CLUBDAY 2026
 - **Schedule:** 08:00 28/08/2026 - 16:00 28/08/2026
-- **Theme:** Cyber Green Matrix with Alphanumeric Rain Engine
-- **Auth:** Streamlined Username & Password registration (no email required)
 
-## 🛠️ Quick Start
+## Quick Start
 
 ### 1. Run Locally
 ```bash
